@@ -1,0 +1,8 @@
+# runtime data — never commit
+/data/*
+!/data/.htaccess
+!/data/.gitkeep
+/uploads/*
+!/uploads/.htaccess
+!/uploads/.gitkeep
+/dist/
