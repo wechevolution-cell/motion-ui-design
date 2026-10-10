@@ -281,4 +281,7 @@ CREATE TABLE import_logs (
   created_at TEXT NOT NULL
 );
 SQL,
+2 => <<<SQL
+CREATE INDEX products_sku_nocase ON products(sku COLLATE NOCASE) WHERE deleted_at IS NULL;
+SQL,
 ];

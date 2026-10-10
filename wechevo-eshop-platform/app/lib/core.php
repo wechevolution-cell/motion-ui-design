@@ -111,6 +111,10 @@ function q(PDO $db, string $sql, array $p = []): PDOStatement
 {
     $st = $db->prepare($sql);
     // bind with real types: SQLite compares INTEGER 0 and TEXT '0' as different values
+    $named = $p && !array_is_list($p) && !array_filter(array_keys($p), fn($k) => !is_string($k) || !preg_match('/^:?[a-z_]\w*$/i', $k));
+    if (!$named) {
+        $p = array_values($p);
+    }
     $i = 0;
     foreach ($p as $k => $v) {
         $key = is_int($k) ? ++$i : (str_starts_with($k, ':') ? $k : ':' . $k);

@@ -97,7 +97,7 @@ final class Shops
         if (!$shop['subscription_expires']) {
             return null;
         }
-        return (int)floor((strtotime($shop['subscription_expires'] . ' UTC') - time()) / 86400);
+        return (int)ceil((strtotime($shop['subscription_expires'] . ' UTC') - time()) / 86400);
     }
 
     public static function setStatus(int $shopId, string $status, string $historyAction, ?string $note = null): void

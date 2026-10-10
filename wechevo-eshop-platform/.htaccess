@@ -10,6 +10,9 @@ DirectoryIndex index.php
   RewriteRule (^|/)\.(?!well-known) - [F,L]
   RewriteRule \.(sqlite|sqlite-wal|sqlite-shm|log|ini|md|lock|bak)$ - [F,L,NC]
 
+  # Scheduler URL fallback (protected by key)
+  RewriteRule ^cron\.php$ - [L]
+
   # Static files are served as-is
   RewriteCond %{REQUEST_FILENAME} -f
   RewriteRule ^(assets|uploads)/ - [L]

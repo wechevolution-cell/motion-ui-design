@@ -4,9 +4,11 @@ $pid = (int)($p['id'] ?? 0);
 $isActive = ($p['status'] ?? 'inactive') === 'active';
 $room = max(0, $limit - $activeCount);
 $vrows = $variants ?: [];
-for ($i = count($vrows); $i < max(3, count($vrows) + 2); $i++) $vrows[] = ['id' => 0, 'sku' => '', 'opts' => [], 'price' => null, 'stock' => 0];
+$vTarget = max(3, count($vrows) + 2);
+while (count($vrows) < $vTarget) $vrows[] = ['id' => 0, 'sku' => '', 'opts' => [], 'price' => null, 'stock' => 0];
 $arows = $attributes ?: [];
-for ($i = count($arows); $i < max(3, count($arows) + 2); $i++) $arows[] = ['name' => '', 'value' => ''];
+$aTarget = max(3, count($arows) + 2);
+while (count($arows) < $aTarget) $arows[] = ['name' => '', 'value' => ''];
 ?>
 <?php foreach ($errors as $m): ?><div class="alert alert-error" role="alert"><?= e($m) ?></div><?php endforeach; ?>
 <form class="f" method="post" enctype="multipart/form-data" action="/admin/products/<?= $pid ?: 'new' ?>">

@@ -12,6 +12,7 @@
     <h2>Συνδρομές</h2>
     <div class="field"><label for="gd">Ημέρες χάριτος μετά τη λήξη (EXPIRED → LOCKED)</label><input class="in" id="gd" name="grace_days" type="number" min="0" max="60" value="<?= (int)$s('grace_days', 3) ?>"></div>
     <div class="field"><label for="wd">Προειδοποιήσεις πριν τη λήξη (ημέρες)</label><input class="in" id="wd" name="warning_days" value="<?= e(implode(', ', (array)$s('warning_days', [10, 3, 1]))) ?>"></div>
+    <div class="field"><label>Cron (Hostinger → Cron Jobs, κάθε 15 λεπτά)</label><input class="in mono" readonly value="/usr/bin/php <?= e(ROOT) ?>/cron.php"><small>ή μέσω URL: <span class="mono">https://<?= e(Config::get('platform_host')) ?>/cron.php?key=<?= e(substr(hash_hmac('sha256', 'cron', (string)Config::get('app_key')), 0, 32)) ?></span></small></div>
     <p class="hint" style="margin:0">Τελευταίος έλεγχος λήξεων: <?= $last ? dt(gmdate('Y-m-d H:i:s', $last)) : 'ποτέ' ?>. Ο έλεγχος τρέχει μέσω cron (cron.php) και αυτόματα κάθε 10 λεπτά με την κίνηση.</p>
   </section>
   <section class="card">

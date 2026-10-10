@@ -66,7 +66,7 @@ $pop = $popupEnabled && !empty($popup['active']) && $view === 'home' ? $popup : 
   <a href="/"<?= $path === '/' ? ' aria-current="page"' : '' ?>><span class="ic" aria-hidden="true">⌂</span>Αρχική</a>
   <a href="/products/"<?= str_starts_with($path, '/products') || str_starts_with($path, '/category') ? ' aria-current="page"' : '' ?>><span class="ic" aria-hidden="true">▦</span>Προϊόντα</a>
   <a href="/search/"<?= $path === '/search/' ? ' aria-current="page"' : '' ?>><span class="ic" aria-hidden="true">⌕</span>Αναζήτηση</a>
-  <a href="/cart/" data-cart-open<?= $path === '/cart/' ? ' aria-current="page"' : '' ?>><span class="ic" aria-hidden="true">◍</span>Καλάθι (<span data-cart-count><?= (int)$cartCount ?></span>)</a>
+  <a href="/cart/" data-cart-open<?= $path === '/cart/' ? ' aria-current="page"' : '' ?>><span class="ic" aria-hidden="true">◍<span class="cnt" data-cart-count><?= (int)$cartCount ?></span></span>Καλάθι</a>
 </nav>
 
 <div class="scrim" id="scrim"></div>

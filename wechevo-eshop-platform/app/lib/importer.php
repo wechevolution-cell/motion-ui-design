@@ -43,8 +43,15 @@ final class Importer
     /** Step 1: store upload, detect format/headers, count rows, guess mapping. */
     public static function upload(PDO $db, int $shopId, array $file, string $user): int
     {
-        if (($file['error'] ?? 1) !== UPLOAD_ERR_OK) {
-            throw new DomainException('Η μεταφόρτωση απέτυχε. Ελέγξτε το μέγεθος του αρχείου.');
+        $err = $file['error'] ?? UPLOAD_ERR_NO_FILE;
+        if ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE || (empty($_FILES) && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0)) {
+            throw new DomainException('Το αρχείο ξεπερνά το όριο μεταφόρτωσης του server (upload_max_filesize = ' . ini_get('upload_max_filesize') . ', post_max_size = ' . ini_get('post_max_size') . '). Αυξήστε το από το hPanel → PHP Configuration ή χωρίστε το αρχείο.');
+        }
+        if ($err === UPLOAD_ERR_NO_FILE) {
+            throw new DomainException('Επιλέξτε αρχείο CSV ή XML.');
+        }
+        if ($err !== UPLOAD_ERR_OK) {
+            throw new DomainException('Η μεταφόρτωση απέτυχε (κωδικός ' . (int)$err . '). Δοκιμάστε ξανά.');
         }
         if ($file['size'] > 50 * 1024 * 1024) {
             throw new DomainException('Το αρχείο ξεπερνά τα 50 MB.');
@@ -198,7 +205,7 @@ final class Importer
                 if ($skuKey !== '') {
                     $seen[$skuKey] = 1;
                 }
-                $existing = $skuKey !== '' ? row($db, 'SELECT * FROM products WHERE lower(sku) = ? AND deleted_at IS NULL', [$skuKey]) : null;
+                $existing = $skuKey !== '' ? row($db, 'SELECT * FROM products WHERE sku = ? COLLATE NOCASE AND deleted_at IS NULL', [$d['sku']]) : null;
                 if (!$existing && empty($d['sku']) && !empty($d['name'])) {
                     $existing = row($db, 'SELECT * FROM products WHERE slug = ? AND deleted_at IS NULL', [slugify($d['name'])]);
                 }

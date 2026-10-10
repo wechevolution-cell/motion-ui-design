@@ -532,14 +532,14 @@ final class AdminRoutes
         foreach ($f['name'] as $i => $name) {
             if (($f['error'][$i] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) continue;
             if ($f['error'][$i] !== UPLOAD_ERR_OK) {
-                $errs[] = "Η εικόνα «$name» δεν ανέβηκε (σφάλμα μεταφόρτωσης).";
+                $errs[] = "Η εικόνα «{$name}» δεν ανέβηκε (σφάλμα μεταφόρτωσης).";
                 continue;
             }
             try {
                 $mid = Media::store(self::$db, (int)self::$shop['id'], $f['tmp_name'][$i], $name, input('name'));
                 insert(self::$db, 'product_images', ['product_id' => $pid, 'media_id' => $mid, 'alt' => Sanitizer::text(input('name'), 200), 'sort' => ++$max]);
             } catch (DomainException $e) {
-                $errs[] = "«$name»: " . $e->getMessage();
+                $errs[] = "«{$name}»: " . $e->getMessage();
             }
         }
         return $errs;
@@ -839,7 +839,7 @@ final class AdminRoutes
                             Media::store($db, (int)self::$shop['id'], $f['tmp_name'][$i], $name);
                             $n++;
                         } catch (DomainException $e) {
-                            flash('error', "«$name»: " . $e->getMessage());
+                            flash('error', "«{$name}»: " . $e->getMessage());
                         }
                     }
                 }

@@ -60,12 +60,12 @@ final class ShopSeed
         insert($db, 'feeds', ['name' => 'BestPrice', 'slug' => 'bestprice', 'type' => 'bestprice', 'status' => 'inactive', 'created_at' => now()]);
         insert($db, 'feeds', ['name' => 'Όλα τα προϊόντα (XML)', 'slug' => 'products', 'type' => 'generic', 'status' => 'active', 'fields' => json_encode(Feeds::GENERIC_FIELDS), 'created_at' => now()]);
         if (!empty($in['demo_catalog'])) {
-            self::demo($db);
+            self::demo($db, $shopId);
         }
     }
 
     /** Optional demo catalogue for QA. Clearly labelled as demo data. */
-    public static function demo(PDO $db): void
+    public static function demo(PDO $db, int $shopId = 0): void
     {
         $cats = [];
         foreach (['Κεραμικά', 'Φωτισμός', 'Υφάσματα', 'Αξεσουάρ'] as $i => $n) {
@@ -96,7 +96,46 @@ final class ShopSeed
                 }
             }
             insert($db, 'product_attributes', ['product_id' => $pid, 'name' => 'Υλικό', 'value' => 'Δεδομένα επίδειξης', 'sort' => 0]);
+            if ($shopId && function_exists('imagecreatetruecolor')) {
+                try {
+                    $tmp = tempnam(sys_get_temp_dir(), 'demo');
+                    self::demoImage($tmp, ['vase', 'mug', 'lamp', 'throw', 'candle', 'bowl', 'bag', 'stool'][$i], $i);
+                    $mid = Media::store($db, $shopId, $tmp, slugify($name) . '.png', $name . ' (εικόνα επίδειξης)');
+                    insert($db, 'product_images', ['product_id' => $pid, 'media_id' => $mid, 'alt' => $name, 'sort' => 0]);
+                    @unlink($tmp);
+                } catch (Throwable $e) {
+                    log_error('demo image: ' . $e->getMessage());
+                }
+            }
         }
+    }
+
+    /** Simple generated product illustration (demo only). */
+    private static function demoImage(string $file, string $shape, int $i): void
+    {
+        $W = 900;
+        $im = imagecreatetruecolor($W, $W);
+        $bgs = [[255, 217, 94], [143, 227, 200], [201, 184, 255], [255, 180, 162], [236, 232, 225], [169, 216, 255], [255, 217, 94], [143, 227, 200]];
+        $fgs = [[236, 232, 225], [95, 134, 162], [215, 195, 160], [125, 132, 85], [201, 154, 78], [181, 103, 74], [169, 124, 80], [120, 86, 52]];
+        $bg = imagecolorallocate($im, ...$bgs[$i % 8]);
+        imagefill($im, 0, 0, $bg);
+        [$r, $g, $b] = $fgs[$i % 8];
+        $c = imagecolorallocate($im, $r, $g, $b);
+        $d = imagecolorallocate($im, (int)($r * .72), (int)($g * .72), (int)($b * .72));
+        $sh = imagecolorallocatealpha($im, 0, 0, 0, 105);
+        imagefilledellipse($im, 450, 760, 520, 70, $sh);
+        switch ($shape) {
+            case 'vase': imagefilledrectangle($im, 400, 170, 500, 290, $c); imagefilledellipse($im, 450, 500, 420, 520, $c); imagefilledellipse($im, 450, 170, 120, 30, $d); break;
+            case 'mug': imagesetthickness($im, 34); imagearc($im, 600, 460, 200, 220, 270, 90, $d); imagefilledrectangle($im, 270, 300, 600, 740, $c); imagefilledellipse($im, 435, 300, 330, 40, $d); break;
+            case 'lamp': imagefilledrectangle($im, 437, 470, 463, 730, $d); imagefilledellipse($im, 450, 735, 260, 50, $d); imagefilledpolygon($im, [330, 220, 570, 220, 690, 480, 210, 480], $c); break;
+            case 'throw': imagefilledrectangle($im, 220, 600, 680, 740, $d); imagefilledrectangle($im, 220, 450, 680, 600, $c); imagefilledrectangle($im, 220, 300, 680, 450, $d); break;
+            case 'candle': imagefilledellipse($im, 450, 250, 40, 90, imagecolorallocate($im, 242, 185, 75)); imagefilledrectangle($im, 300, 320, 600, 740, $c); imagefilledrectangle($im, 340, 460, 560, 580, imagecolorallocate($im, 255, 255, 255)); break;
+            case 'bowl': imagefilledarc($im, 450, 470, 560, 520, 0, 180, $c, IMG_ARC_PIE); imagefilledellipse($im, 450, 470, 560, 70, $d); break;
+            case 'bag': imagesetthickness($im, 26); imagearc($im, 450, 330, 220, 260, 180, 360, $d); imagefilledpolygon($im, [270, 330, 630, 330, 670, 740, 230, 740], $c); break;
+            default: imagesetthickness($im, 30); imageline($im, 330, 470, 270, 740, $d); imageline($im, 570, 470, 630, 740, $d); imageline($im, 450, 490, 450, 750, $d); imagefilledellipse($im, 450, 460, 420, 110, $c); break;
+        }
+        imagepng($im, $file);
+        imagedestroy($im);
     }
 }
 

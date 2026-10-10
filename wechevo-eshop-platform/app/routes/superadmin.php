@@ -59,7 +59,7 @@ final class SuperRoutes
         }
         $tpls = [
             ['t01', 'Bento Market', 'Παιχνιδιάρικο, χρωματιστό, mobile-first. Για τρόφιμα, δώρα, παιχνίδια, αθλητικά, lifestyle.', 'available'],
-            ['t02', 'Swiss Clarity', 'Καθαρό πλέγμα, αναζήτηση & φίλτρα. Για ηλεκτρονικά, εργαλεία, μεγάλους καταλόγους.', 'coming_soon'],
+            ['t02', 'Swiss Clarity', 'Καθαρό πλέγμα, αναζήτηση & φίλτρα. Για ηλεκτρονικά, εργαλεία, μεγάλους καταλόγους.', 'available'],
             ['t03', 'Editorial Boutique', 'Περιοδικό ύφος, μεγάλες εικόνες. Για μόδα, κεραμικά, διακόσμηση, καλλυντικά.', 'coming_soon'],
             ['t04', 'Template 04', 'Σε σχεδιασμό.', 'coming_soon'], ['t05', 'Template 05', 'Σε σχεδιασμό.', 'coming_soon'],
             ['t06', 'Template 06', 'Σε σχεδιασμό.', 'coming_soon'], ['t07', 'Template 07', 'Σε σχεδιασμό.', 'coming_soon'],
