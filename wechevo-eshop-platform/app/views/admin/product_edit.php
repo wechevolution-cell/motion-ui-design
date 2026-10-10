@@ -13,7 +13,7 @@ while (count($arows) < $aTarget) $arows[] = ['name' => '', 'value' => ''];
 <?php foreach ($errors as $m): ?><div class="alert alert-error" role="alert"><?= e($m) ?></div><?php endforeach; ?>
 <form class="f" method="post" enctype="multipart/form-data" action="/admin/products/<?= $pid ?: 'new' ?>">
   <?= Csrf::field() ?>
-  <div class="grid" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:start">
+  <div class="grid split">
     <div class="stack" style="gap:16px">
       <section class="card">
         <h2>Βασικά στοιχεία</h2>

@@ -22,7 +22,7 @@ $on = in_array((int)$p['id'], $wish, true);
       <h1 class="kin"><?= e($p['name']) ?></h1>
       <div data-price><?= t01_price($p) ?></div>
       <?php if ($p['short_description']): ?><p style="margin:0"><?= e($p['short_description']) ?></p><?php endif; ?>
-      <form method="post" action="/cart/" data-add-to-cart data-variants="<?= e(json_encode($vdata, JSON_UNESCAPED_UNICODE)) ?>" data-manage="<?= (int)$p['manage_stock'] ?>">
+      <form method="post" action="/cart/" novalidate data-add-to-cart data-variants="<?= e(json_encode($vdata, JSON_UNESCAPED_UNICODE)) ?>" data-manage="<?= (int)$p['manage_stock'] ?>">
         <input type="hidden" name="_csrf" value="<?= e(Csrf::token()) ?>"><input type="hidden" name="op" value="add"><input type="hidden" name="product_id" value="<?= (int)$p['id'] ?>"><input type="hidden" name="variant_id" value="">
         <?php foreach ($opts as $name => $vals): $nid = 'o' . substr(md5($name), 0, 6); ?>
           <fieldset style="border:0;margin:0 0 14px;padding:0"><legend class="lbl"><?= e($name) ?></legend><div class="opts">

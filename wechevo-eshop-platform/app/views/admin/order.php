@@ -1,4 +1,4 @@
-<div class="grid" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:start">
+<div class="grid split">
   <div class="stack" style="gap:16px">
     <section class="card">
       <div class="card-h"><h2>Προϊόντα</h2><span class="muted"><?= dt($o['created_at']) ?></span></div>

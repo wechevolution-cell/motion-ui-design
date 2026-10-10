@@ -1,4 +1,4 @@
-<?php $hero = $h['hero'] ?? []; $vals = $h['values'] ?? []; $faq = $h['faq'] ?? []; for ($i = count($faq); $i < count($faq) + 3; $i++) $faq[] = ['q' => '', 'a' => '']; ?>
+<?php $hero = $h['hero'] ?? []; $vals = $h['values'] ?? []; $faq = $h['faq'] ?? []; $fTarget = count($faq) + 3; while (count($faq) < $fTarget) $faq[] = ['q' => '', 'a' => '']; ?>
 <form class="f" method="post" enctype="multipart/form-data"><?= Csrf::field() ?>
 <div class="grid g2" style="align-items:start">
   <section class="card">

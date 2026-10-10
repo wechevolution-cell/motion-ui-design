@@ -12,7 +12,7 @@ $renderTree = function ($nodes) use (&$renderTree, $counts) {
 };
 $c = $edit ?? [];
 ?>
-<div class="grid" style="grid-template-columns:minmax(0,3fr) minmax(0,2fr);align-items:start">
+<div class="grid split">
   <section class="card tree">
     <div class="card-h"><h2>Δέντρο κατηγοριών</h2><a class="btn btn-ghost btn-sm" href="/admin/categories">+ Νέα κατηγορία</a></div>
     <?= $tree ? $renderTree($tree) : '<p class="muted">Δεν υπάρχουν κατηγορίες ακόμη. Οι κατηγορίες δεν έχουν όριο και μπορούν να έχουν όσα επίπεδα θέλετε.</p>' ?>

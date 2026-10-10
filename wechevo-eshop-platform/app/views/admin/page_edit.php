@@ -1,6 +1,6 @@
 <?php $v = fn($k, $d = '') => e($pg[$k] ?? $d); $locked = $pg && in_array($pg['slug'], ['terms', 'privacy', 'contact'], true); ?>
 <form class="f" method="post"><?= Csrf::field() ?>
-<div class="grid" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:start">
+<div class="grid split">
   <section class="card">
     <div class="field"><label for="t">Τίτλος</label><input class="in" id="t" name="title" required value="<?= $v('title') ?>"></div>
     <div class="field"><label for="b">Περιεχόμενο (HTML)</label><textarea class="in" id="b" name="body" rows="18"><?= $v('body') ?></textarea>

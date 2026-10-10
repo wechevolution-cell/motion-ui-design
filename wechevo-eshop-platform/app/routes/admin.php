@@ -485,6 +485,9 @@ final class AdminRoutes
 
     private static function saveVariants(int $pid): void
     {
+        if (!array_key_exists('variants', $_POST)) {
+            return; // form without the variants block (API/partial post): leave variants untouched
+        }
         $db = self::$db;
         $rows = $_POST['variants'] ?? [];
         $keep = [];
@@ -514,6 +517,9 @@ final class AdminRoutes
 
     private static function saveAttributes(int $pid): void
     {
+        if (!array_key_exists('attributes', $_POST)) {
+            return;
+        }
         $db = self::$db;
         q($db, 'DELETE FROM product_attributes WHERE product_id = ?', [$pid]);
         foreach ((array)($_POST['attributes'] ?? []) as $i => $a) {

@@ -1,6 +1,7 @@
 /* Template 02 · Swiss Clarity. Same page markup as t01, different presentation: strict grid, hairlines, square corners, micro-motion only. */
 :root{--gut:clamp(16px,2.4vw,32px);--max:1440px;--sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--line:var(--secondary);color-scheme:light}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0}
 body{background:var(--background);color:var(--text);font:400 15px/1.55 var(--sans);overflow-x:hidden;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 72px)}
 @media (min-width:861px){body{padding-bottom:0}}

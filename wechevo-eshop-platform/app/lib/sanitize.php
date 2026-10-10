@@ -70,6 +70,10 @@ final class Sanitizer
                     $c->removeAttribute($attr->name);
                 }
             }
+            if ($tag === 'img' && !$c->hasAttribute('src')) {
+                $node->removeChild($c); // an image whose source was unsafe is dropped entirely
+                continue;
+            }
             if ($tag === 'iframe' && !preg_match(self::IFRAME_HOSTS, $c->getAttribute('src'))) {
                 $node->removeChild($c);
                 continue;
