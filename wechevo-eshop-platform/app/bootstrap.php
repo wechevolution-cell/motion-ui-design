@@ -63,14 +63,19 @@ final class App
         $platformHost = Config::get('platform_host');
         Scheduler::maybeRun();
 
-        if ($host === $platformHost) {
+        $onPlatformHost = preg_replace('/^www\./', '', $host) === preg_replace('/^www\./', '', (string)$platformHost);
+        $shop = Shops::byDomain($host);
+        $shopHere = $shop && $shop['status'] !== 'DELETED';
+
+        // Super Admin always lives under /superadmin/ on the platform domain. When a shop is also
+        // mapped to that domain (single-domain mode), every other path belongs to that shop.
+        if ($onPlatformHost && ($path === '/superadmin' || str_starts_with($path, '/superadmin/') || !$shopHere)) {
             self::$area = 'super';
             require APP . '/routes/superadmin.php';
             SuperRoutes::dispatch($path);
             return;
         }
 
-        $shop = Shops::byDomain($host);
         if (!$shop || $shop['status'] === 'DELETED') {
             self::$area = 'none';
             abort(404, 'Δεν βρέθηκε κατάστημα για αυτό το domain.');

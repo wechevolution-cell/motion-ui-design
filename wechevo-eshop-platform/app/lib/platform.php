@@ -449,6 +449,9 @@ final class Domains
         if (function_exists('idn_to_ascii') && preg_match('/[^\x00-\x7F]/', $d)) {
             $d = idn_to_ascii($d) ?: $d;
         }
+        if ($d === 'localhost') {
+            return $d; // local single-domain testing
+        }
         return preg_match('/^(?=.{3,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9-]{2,63}$/', $d) ? $d : null;
     }
 }

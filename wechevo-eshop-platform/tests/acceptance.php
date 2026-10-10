@@ -494,6 +494,21 @@ $pl = $adminC->get("$C/admin/products?per=50&page=150");
 ok($pl['code'] === 200 && str_contains($pl['body'], 'Προϊόντα 7451–7500 από 10.000'), 'Σελιδοποίηση διαχείρισης σε 10.000 προϊόντα');
 
 /* ------------------------------------------------------------------ */
+section('Ενιαίο domain: βιτρίνα + /admin + /superadmin στο ίδιο host');
+$r = $mk('Κύριο Κατάστημα', 'localhost', 'starter', 'owner-main@example.gr', true);
+ok($r['code'] === 302 && str_contains($r['location'], '/superadmin/shops/'), 'Κατάστημα στο domain του πίνακα ελέγχου');
+$home = $guest->get("$P/");
+ok($home['code'] === 200 && str_contains($home['body'], 'Κύριο Κατάστημα') && str_contains($home['body'], '/assets/templates/'), 'Το / σερβίρει τη βιτρίνα');
+ok($guest->get("$P/products/")['code'] === 200 && $guest->get("$P/product/keramiko-vazo-akti/")['code'] === 200, 'Σελίδες προϊόντων στο ίδιο domain');
+ok($super->get("$P/superadmin/")['code'] === 200, 'Το Super Admin συνεχίζει να λειτουργεί στο /superadmin/');
+$mainAdmin = new Client('mainadmin');
+$r = $mainAdmin->form("$P/admin/login", "$P/admin/login", ['email' => 'owner-main@example.gr', 'password' => 'OwnerPass123']);
+ok($r['code'] === 302 && $mainAdmin->get("$P/admin/dashboard")['code'] === 200, 'Ο διαχειριστής του καταστήματος μπαίνει στο /admin/ του ίδιου domain');
+$r = $mainAdmin->get("$P/superadmin/shops");
+ok($r['code'] === 302 && str_contains($r['location'], '/superadmin/login'), 'Ο διαχειριστής καταστήματος δεν περνά στο /superadmin/');
+ok($super->get("$P/admin/dashboard")['code'] === 302, 'Η σύνδεση Super Admin δεν δίνει πρόσβαση στο /admin/ (ξεχωριστά sessions)');
+ok(str_contains($guest->get("$P/robots.txt")['body'], 'Disallow: /superadmin/'), 'robots.txt αποκλείει /admin/ και /superadmin/');
+
 section('Διαγραφή καταστήματος (δύο βήματα)');
 $sv = $super->get("$P/superadmin/shops/$shopC");
 $super->post("$P/superadmin/shops/$shopC/delete", ['_csrf' => Client::csrf($sv['body']), 'confirm_domain' => 'wrong.localhost']);

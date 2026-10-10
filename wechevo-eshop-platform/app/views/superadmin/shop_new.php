@@ -15,7 +15,7 @@ $durs = []; foreach ($plans as $pl) { $durs = array_merge($durs, Plans::duration
   </div></fieldset>
 
   <fieldset data-step><legend>Domain &amp; hosting</legend><div class="grid g2">
-    <div class="field"><label for="dm">Domain καταστήματος</label><input class="in" id="dm" name="domain" required placeholder="example<?= e($suggest) ?>" value="<?= $o('domain') ?>"><small>Χωρίς www· το www ανακατευθύνεται αυτόματα. Το DNS πρέπει να δείχνει σε αυτόν τον server.</small></div>
+    <div class="field"><label for="dm">Domain καταστήματος</label><input class="in" id="dm" name="domain" required placeholder="example<?= e($suggest) ?>" value="<?= $o('domain') ?>"><small>Χωρίς www· το www ανακατευθύνεται αυτόματα. Το DNS πρέπει να δείχνει σε αυτόν τον server. Για <b>ενιαίο domain</b> βάλτε το domain του πίνακα ελέγχου (<span class="mono"><?= e(Config::get('platform_host')) ?></span>): η βιτρίνα θα είναι στο /, η διαχείριση στο /admin/ και το Super Admin στο /superadmin/.</small></div>
     <div class="field"><label for="hp">Πάροχος hosting</label><input class="in" id="hp" name="hosting_provider" value="<?= $o('hosting_provider', 'Hostinger') ?>"></div>
     <div class="field" style="grid-column:1/-1"><label for="hn">Σημειώσεις hosting</label><textarea class="in" id="hn" name="hosting_notes" rows="3"><?= $o('hosting_notes') ?></textarea></div>
   </div></fieldset>

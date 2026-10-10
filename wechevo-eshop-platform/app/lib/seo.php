@@ -134,9 +134,9 @@ final class Seo
     public static function robots(string $base): string
     {
         $bots = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-Web', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended'];
-        $t = "User-agent: *\nDisallow: /admin/\nDisallow: /cart/\nDisallow: /checkout/\nDisallow: /order/\nDisallow: /search/\nDisallow: /wishlist/\nAllow: /\n\n";
+        $t = "User-agent: *\nDisallow: /admin/\nDisallow: /superadmin/\nDisallow: /cart/\nDisallow: /checkout/\nDisallow: /order/\nDisallow: /search/\nDisallow: /wishlist/\nAllow: /\n\n";
         foreach ($bots as $b) {
-            $t .= "User-agent: $b\nDisallow: /admin/\nDisallow: /checkout/\nAllow: /\n\n";
+            $t .= "User-agent: $b\nDisallow: /admin/\nDisallow: /superadmin/\nDisallow: /checkout/\nAllow: /\n\n";
         }
         return $t . "Sitemap: $base/sitemap.xml\n";
     }
